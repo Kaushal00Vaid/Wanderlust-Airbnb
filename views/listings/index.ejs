@@ -8,14 +8,21 @@
 <style>
   #filters {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     margin-bottom: 2rem;
+    padding: 0 1rem;
     align-items: center;
+    scrollbar-width: thin;
+  }
+  #filters::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari, Opera */
   }
   .filter {
     text-align: center;
     margin-right: 2rem;
     margin-top: 2rem;
+    flex-shrink: 0;
     opacity: 0.65;
   }
   .filter:hover {
@@ -24,6 +31,51 @@
   }
   .filter p {
     font-size: 0.8rem;
+  }
+
+  /* Media Queries for Responsiveness */
+
+  /* Mobile Screens */
+  @media (max-width: 600px) {
+    #filters {
+      flex-wrap: nowrap; /* Ensure horizontal scroll */
+      padding: 0 0.5rem;
+    }
+    .filter {
+      margin-right: 1rem; /* Reduce spacing between items */
+    }
+    .filter p {
+      font-size: 0.7rem; /* Adjust font size for smaller screens */
+    }
+  }
+
+  /* Tablets */
+  @media (min-width: 601px) and (max-width: 900px) {
+    #filters {
+      flex-wrap: nowrap; /* Horizontal scroll for medium screens */
+      padding: 0 1rem;
+    }
+    .filter {
+      margin-right: 1.5rem; /* Slightly more spacing */
+    }
+    .filter p {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Large Screens */
+  @media (min-width: 901px) {
+    #filters {
+      flex-wrap: wrap; /* Wrap items on larger screens */
+      overflow-x: visible; /* Remove horizontal scrolling */
+    }
+    .filter {
+      margin-right: 2rem;
+      margin-top: 2rem;
+    }
+    .filter p {
+      font-size: 0.8rem;
+    }
   }
 
   .tax-info {
@@ -38,6 +90,8 @@
     margin-left: 5rem;
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    gap: 0.5rem;
   }
 </style>
 

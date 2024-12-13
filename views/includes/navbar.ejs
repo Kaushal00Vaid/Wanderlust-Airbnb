@@ -18,31 +18,125 @@
     padding: 0.5rem 3rem 0.5rem 3rem;
     font-size: 0.85rem;
   }
+  /* Default styling for large screens */
+  .navbar .menu-links {
+    display: inline-block; /* Make sure the links are inline and visible */
+    color: #333; /* Default color */
+    text-decoration: none;
+  }
+
+  .navbar-nav .nav-link:hover {
+    color: #fe424d; /* Color on hover */
+  }
+  /* Hidden Sliding Menu */
+  .hidden-menu {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    background-color: #fff;
+    z-index: 1040;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  .hidden-menu.active {
+    transform: translateY(90%);
+  }
+  /* Ensure logo and toggle button stay on top */
+  .navbar-brand,
+  .navbar-toggler {
+    position: relative;
+    z-index: 1050;
+  }
+
+  .menu-links a {
+    color: #333;
+    text-decoration: none;
+  }
+
+  #content {
+    transition: margin-top 0.3s ease-in-out;
+  }
+
+  #content.menu-open {
+    margin-top: 200px; /* Adjust this based on the height of the sliding menu */
+  }
+  @media (max-width: 767px) {
+    .navbar-nav .nav-link {
+      display: none; /* Hide these links on small screens */
+    }
+
+    .hidden-menu .nav-link {
+      display: block; /* Make them visible inside the sliding menu */
+    }
+
+    /* Adjust the content on mobile when the menu is opened */
+    #content.menu-open {
+      margin-top: 200px; /* Adjust to match the height of the sliding menu */
+    }
+  }
+
+  /* When the menu is active on mobile, show the menu links */
+  .hidden-menu.active .nav-link {
+    display: block;
+    padding: 1rem 0;
+  }
+
+  /* For large screens, ensure the links are visible */
+  @media (min-width: 768px) {
+    .navbar-nav .nav-link {
+      display: inline-block; /* Ensure these links are visible on larger screens */
+    }
+  }
 </style>
 
 <!-- adding bootstrap navbar -->
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
   <div class="container-fluid">
+    <!-- Logo and toggle button -->
     <a class="navbar-brand" href="/listings"
       ><i class="fa-regular fa-compass"></i
     ></a>
     <button
       class="navbar-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNavAltMarkup"
-      aria-controls="navbarNavAltMarkup"
-      aria-expanded="false"
+      id="menuToggle"
       aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+    <!-- Sliding menu for search and login -->
+    <div id="slidingMenu" class="hidden-menu">
+      <form class="d-flex mb-3" role="search">
+        <input
+          class="form-control me-2 search-inp"
+          type="search"
+          placeholder="Search destinations"
+        />
+        <button class="btn search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>Search
+        </button>
+      </form>
+      <div class="menu-links">
+        <a href="/listings/new" class="d-block mb-2">Airbnb your home</a>
+        <% if(!currUser){ %>
+        <a href="/signup" class="d-block mb-2"><b>SignUp</b></a>
+        <a href="/login" class="d-block mb-2"><b>Login</b></a>
+        <%}%> <% if(currUser){ %>
+        <a href="/logout" class="d-block mb-2"><b>Logout</b></a>
+        <%}%>
+      </div>
+    </div>
+
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link" href="/listings">Explore</a>
       </div>
-
-      <!-- search bar -->
       <div class="navbar-nav ms-auto">
         <form class="d-flex" role="search">
           <input
@@ -69,3 +163,19 @@
     </div>
   </div>
 </nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const menuToggle = document.getElementById("menuToggle");
+    const slidingMenu = document.getElementById("slidingMenu");
+    const content = document.getElementById("content");
+
+    menuToggle.addEventListener("click", () => {
+      const isActive = slidingMenu.classList.contains("active");
+
+      // Toggle active class for menu and body content
+      slidingMenu.classList.toggle("active", !isActive);
+      content.classList.toggle("menu-open", !isActive);
+    });
+  });
+</script>
